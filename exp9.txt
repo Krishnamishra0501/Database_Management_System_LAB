@@ -1,0 +1,57 @@
+CREATE TABLE route_header (
+route_id NUMBER(5),
+origin VARCHAR2(20),
+destination VARCHAR2(20),
+fare NUMBER(7,2),
+distance NUMBER(4),
+capacity NUMBER(3)
+);
+
+
+
+INSERT INTO route_header VALUES (102,'trichy','madurai',33,450,56);
+INSERT INTO route_header VALUES (103,'madurai','madras',35,250,50);
+INSERT INTO route_header VALUES (104,'madurai','madras',35,750,50);
+INSERT INTO route_header VALUES (105,'madurai','madras',35,1200,50);
+
+
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE router_header_proc1
+(routeid route_header.route_id%TYPE)
+AS
+a NUMBER(7,2);
+b NUMBER(4);
+BEGIN
+
+SELECT fare, distance INTO a, b
+FROM route_header
+WHERE route_id = routeid;
+
+IF b < 500 THEN
+   UPDATE route_header
+   SET fare = 190.98
+   WHERE route_id = routeid;
+
+   DBMS_OUTPUT.PUT_LINE('Fare updated to 190.98');
+
+ELSIF b BETWEEN 501 AND 1000 THEN
+   UPDATE route_header
+   SET fare = 876
+   WHERE route_id = routeid;
+
+   DBMS_OUTPUT.PUT_LINE('Fare updated to 876');
+
+ELSIF b > 1000 THEN
+   DBMS_OUTPUT.PUT_LINE('Sorry, distance is too large.');
+
+END IF;
+
+COMMIT;
+
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('Route ID not found');
+
+END;
+/

@@ -1,0 +1,95 @@
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE SwapNumbers (
+num1 IN OUT NUMBER,
+num2 IN OUT NUMBER
+)
+AS
+BEGIN
+
+num1 := num1 + num2;
+num2 := num1 - num2;
+num1 := num1 - num2;
+
+END;
+/
+DECLARE
+a NUMBER := 10;
+b NUMBER := 20;
+
+BEGIN
+
+SwapNumbers(a, b);
+
+DBMS_OUTPUT.PUT_LINE('After Swap: a = ' || a || ', b = ' || b);
+
+END;
+/
+
+
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE FindLargest (
+num1 IN NUMBER,
+num2 IN NUMBER,
+num3 IN NUMBER,
+largest OUT NUMBER
+)
+AS
+BEGIN
+
+IF num1 >= num2 AND num1 >= num3 THEN
+   largest := num1;
+
+ELSIF num2 >= num1 AND num2 >= num3 THEN
+   largest := num2;
+
+ELSE
+   largest := num3;
+
+END IF;
+
+END;
+/
+DECLARE
+a NUMBER := 15;
+b NUMBER := 40;
+c NUMBER := 25;
+result NUMBER;
+
+BEGIN
+
+FindLargest(a, b, c, result);
+
+DBMS_OUTPUT.PUT_LINE('Largest Number is: ' || result);
+
+END;
+/
+
+
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE CalculateArea (
+radius IN NUMBER,
+area OUT NUMBER
+)
+AS
+BEGIN
+
+area := 3.14159 * radius * radius;
+
+END;
+/
+
+DECLARE
+r NUMBER := 5;
+result NUMBER;
+
+BEGIN
+
+CalculateArea(r, result);
+
+DBMS_OUTPUT.PUT_LINE('Area of Circle is: ' || result);
+
+END;
+/

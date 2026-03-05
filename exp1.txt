@@ -1,0 +1,86 @@
+CREATE TABLE UNIVERSITY (
+    university_id NUMBER PRIMARY KEY,
+    name VARCHAR2(100) NOT NULL
+);
+
+CREATE TABLE DEPARTMENT (
+    dept_id NUMBER PRIMARY KEY,
+    name VARCHAR2(50) NOT NULL,
+    building VARCHAR2(50),
+    budget NUMBER(12,2),
+    university_id NUMBER,
+    CONSTRAINT fk_department_university FOREIGN KEY (university_id)
+        REFERENCES UNIVERSITY(university_id)
+);
+
+CREATE TABLE INSTRUCTOR (
+    instructor_id NUMBER PRIMARY KEY,
+    name VARCHAR2(50) NOT NULL,
+    dept_id NUMBER,
+    is_hod CHAR(1) DEFAULT 'N',  -- 'Y' = yes, 'N' = no
+    salary NUMBER(10,2),
+    CONSTRAINT fk_instructor_dept FOREIGN KEY (dept_id)
+        REFERENCES DEPARTMENT(dept_id)
+);
+
+CREATE TABLE COURSE (
+    course_id VARCHAR2(8) PRIMARY KEY,
+    title VARCHAR2(100) NOT NULL,
+    dept_id NUMBER,
+    credits NUMBER,
+    CONSTRAINT fk_course_dept FOREIGN KEY (dept_id)
+        REFERENCES DEPARTMENT(dept_id)
+);
+
+CREATE TABLE SECTION (
+    section_id NUMBER PRIMARY KEY,
+    course_id VARCHAR2(8),
+    semester VARCHAR2(6),
+    year NUMBER,
+    building VARCHAR2(50),
+    room_number VARCHAR2(10),
+    time_slot_id VARCHAR2(4),
+    CONSTRAINT fk_section_course FOREIGN KEY (course_id)
+        REFERENCES COURSE(course_id)
+);
+
+CREATE TABLE TEACHES (
+    instructor_id NUMBER,
+    section_id NUMBER,
+    PRIMARY KEY (instructor_id, section_id),
+    CONSTRAINT fk_teaches_instructor FOREIGN KEY (instructor_id)
+        REFERENCES INSTRUCTOR(instructor_id),
+    CONSTRAINT fk_teaches_section FOREIGN KEY (section_id)
+        REFERENCES SECTION(section_id)
+);
+
+CREATE TABLE STUDENT (
+    student_id NUMBER PRIMARY KEY,
+    name VARCHAR2(50) NOT NULL,
+    tot_cred NUMBER
+);
+
+CREATE TABLE TAKES (
+    student_id NUMBER,
+    section_id NUMBER,
+    grade VARCHAR2(2),
+    PRIMARY KEY (student_id, section_id),
+    CONSTRAINT fk_takes_student FOREIGN KEY (student_id)
+        REFERENCES STUDENT(student_id),
+    CONSTRAINT fk_takes_section FOREIGN KEY (section_id)
+        REFERENCES SECTION(section_id)
+);
+
+CREATE TABLE TIME_SLOT (
+    time_slot_id VARCHAR2(4) PRIMARY KEY,
+    day CHAR(1),
+    start_time VARCHAR2(5),  -- 'HH24:MI'
+    end_time VARCHAR2(5)
+);
+
+CREATE TABLE CLASSROOM (
+    building VARCHAR2(50),
+    room_number VARCHAR2(10),
+    capacity NUMBER,
+    PRIMARY KEY (building, room_number)
+);
