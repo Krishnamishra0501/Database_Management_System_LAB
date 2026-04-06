@@ -82,3 +82,24 @@ SELECT name,
            WHEN salary > 60000 THEN 'More Salary'
        END AS SalaryCategory
 FROM INSTRUCTOR;
+
+n)display names of instructors concatenated with department names
+select i.name || ' ' || d.name as details
+from instructor i
+join department d on i.dept_id = d.dept_id;
+
+
+o) retrieve distinct number of instructors
+select count(distinct instructor_id) as total_instructors
+from instructor;
+
+
+p) instructors whose salary is greater than at least one instructor in biology
+select name
+from instructor
+where salary > any (
+select salary
+from instructor i join department d
+on i.dept_id = d.dept_id
+where d.name = 'Biology'
+);
