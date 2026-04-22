@@ -54,6 +54,9 @@ INSERT INTO Assignments VALUES (5,203,35);
 INSERT INTO Assignments VALUES (6,204,25);
 INSERT INTO Assignments VALUES (7,202,45);
 
+INNER JOIN
+    Objective: Retrieve and display the list of employees along with their department names.
+    
 
 SELECT e.emp_name,
        d.dept_name
@@ -61,12 +64,16 @@ FROM Employees e
 INNER JOIN Departments d
 ON e.dept_id = d.dept_id;
 
+LEFT JOIN
+    Objective: Display all employees and their assigned projects, including employees who are not assigned to any project.
 
 SELECT e.emp_name,
        p.proj_name
 FROM Employees e
 LEFT JOIN Assignments a ON e.emp_id = a.emp_id
 LEFT JOIN Projects p ON a.proj_id = p.proj_id;
+RIGHT JOIN
+    Objective: List all projects and the employees assigned to them, including projects with no employees
 
 SELECT p.proj_name,
        e.emp_name
@@ -74,12 +81,17 @@ FROM Projects p
 LEFT JOIN Assignments a ON p.proj_id = a.proj_id
 LEFT JOIN Employees e ON a.emp_id = e.emp_id;
 
+FULL OUTER JOIN
+    Objective: Get a list of all employees and departments, showing departments without employees and employees without departments.
 
 SELECT e.emp_name,
        d.dept_name
 FROM Employees e
 FULL OUTER JOIN Departments d
 ON e.dept_id = d.dept_id;
+. SELF JOIN
+    Objective: Display the list of employees along with their managers' names.
+    
 
 SELECT e.emp_name AS Employee,
        m.emp_name AS Manager
@@ -87,6 +99,8 @@ FROM Employees e
 LEFT JOIN Employees m
 ON e.manager_id = m.emp_id;
 
+CROSS JOIN
+    Objective: Generate a report showing all possible pairs of employees and projects (regardless of assignment).
 
 
 SELECT e.emp_name,
